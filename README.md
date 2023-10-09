@@ -19,7 +19,7 @@ Expenses Report is a CLI application that helps you to note your expenses and yo
 Copy and paste the code below in the terminal.
 
 ```sh
-$ npm install -g json-server
+npm install -g json-server
 ```
 
 ## Run The Application
@@ -27,12 +27,12 @@ $ npm install -g json-server
 ### 1. Open terminal and run the Dart Application
 
 ```sh
-$ dart run
+dart run
 ```
 
 ### 2. Open new terminal and run the json-server
 ```sh
-$ json-server --watch db/db.json
+json-server --watch db/db.json
 ```
 
 ## Code Documentation
