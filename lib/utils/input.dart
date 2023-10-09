@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:financial_report/utils/date_converter.dart';
+import 'package:expenses_report/utils/date_converter.dart';
 
 dynamic input(String label, Type type) {
   switch (type) {
