@@ -16,7 +16,7 @@ Future<dynamic> getExpenses() async {
 Future<int> getTotalExpenses() async {
   final expenses = await getExpenses();
 
-  int totalExpenses = 0;
+  num totalExpenses = 0;
 
   for (var expense in expenses) {
     DateTime today = DateTime.now();
@@ -24,11 +24,11 @@ Future<int> getTotalExpenses() async {
     DateTime expenseDate = stringToDate(expenseDateString);
 
     if (isWithinLastMonth(expenseDate, today)) {
-      totalExpenses += int.parse(expense['amount']);
+      totalExpenses += expense['amount'];
     }
   }
 
-  return totalExpenses;
+  return totalExpenses.toInt();
 }
 
 Future<int> postExpense(Expense expense) async {
