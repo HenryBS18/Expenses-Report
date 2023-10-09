@@ -45,7 +45,7 @@ Future<int> getTotalExpenses() async {
 Future<int> postExpense(Expense expense) async {
   final List<String> date = dateToString(expense.date).split('-');
 
-  final response = await http.post(Uri.parse("http://localhost:3000/expenses"),
+  final Response response = await http.post(Uri.parse("http://localhost:3000/expenses"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'amount': expense.amount,
