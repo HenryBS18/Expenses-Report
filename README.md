@@ -1,4 +1,4 @@
-<h1 align="center">Expenses Report CLI App</h1>
+<h1 align="center">Expenses Report CLI App Documentation</h1>
 
 ## About The App
 Expenses Report is a CLI application that helps you to note your expenses and you can track it up to the 1 last month.
