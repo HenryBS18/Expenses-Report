@@ -1,14 +1,13 @@
-import 'package:financial_report/api/expense.dart';
+import 'package:expenses_report/api/expense.dart';
 
-import 'package:financial_report/models/expense_model.dart';
+import 'package:expenses_report/models/expense.dart';
+import 'package:expenses_report/utils/date_converter.dart';
 
-import 'package:financial_report/utils/input.dart';
-import 'package:financial_report/utils/money_formatter.dart';
+import 'package:expenses_report/utils/input.dart';
+import 'package:expenses_report/utils/money_formatter.dart';
 
 void main(List<String> arguments) async {
   while (true) {
-    String menu;
-
     print("======================");
     print("-- Financial Report --");
     print("======================");
@@ -16,7 +15,7 @@ void main(List<String> arguments) async {
     print("2. Expenses List");
     print("3. Total Expenses (1 Month)");
 
-    menu = input("Menu: ", String);
+    String menu = input("Menu: ", String);
 
     print('');
 
@@ -31,10 +30,10 @@ void main(List<String> arguments) async {
         final String inputNotes = input("Notes: ", String);
         final DateTime inputDate = input("Date (dd-mm-yyyy): ", DateTime);
 
-        Expense expense = Expense(inputExpense, inputCategory, inputNotes, inputDate);
+        final Expense expense = Expense(0, inputExpense, inputCategory, inputNotes, inputDate);
 
         try {
-          int response = await postExpense(expense);
+          final int response = await postExpense(expense);
 
           if (response == 201) {
             print("Success to add expense!");
@@ -51,15 +50,19 @@ void main(List<String> arguments) async {
         print("===================");
 
         try {
-          final expenses = await getExpenses();
+          final List<Expense> expenses = await getExpenses();
           print("ID | Category | Amount | Date | Notes");
+          if (expenses.isEmpty) {
+            print('--------------- empty ---------------');
+            break;
+          }
 
           for (var expense in expenses) {
-            final String id = expense['id'].toString().length == 1 ? '0${expense['id'].toString()}' : expense['id'].toString();
-            final String category = expense['category'];
-            final String amount = moneyFomatter(expense['amount']);
-            final String date = '${expense['date']['day']}-${expense['date']['month']}-${expense['date']['year']}';
-            final String notes = expense['notes'] == '' ? '-' : expense['notes'];
+            final String id = expense.id.toString().length == 1 ? '0${expense.id.toString()}' : expense.id.toString();
+            final String category = expense.category;
+            final String amount = moneyFomatter(expense.amount);
+            final String date = dateToString(expense.date);
+            final String? notes = expense.notes == '' ? '-' : expense.notes;
 
             print("$id | $category | $amount | $date | $notes");
           }
@@ -74,7 +77,7 @@ void main(List<String> arguments) async {
         print("==============================");
 
         try {
-          int totalExpenses = await getTotalExpenses();
+          final int totalExpenses = await getTotalExpenses();
           print("Total Expenses: ${moneyFomatter(totalExpenses)}");
         } catch (e) {
           print('failed to count total Expenses');
@@ -84,7 +87,6 @@ void main(List<String> arguments) async {
         print("Menu Not Found!");
         return;
     }
-
     print("");
   }
 }

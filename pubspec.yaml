@@ -1,5 +1,5 @@
-name: financial_report
-description: A sample command-line application.
+name: expenses_report
+description: An expenses report application.
 version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
