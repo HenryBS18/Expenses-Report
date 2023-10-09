@@ -2,29 +2,40 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'package:financial_report/utils/date_converter.dart';
-import 'package:financial_report/utils/last_month_check.dart';
+import 'package:expenses_report/utils/date_converter.dart';
+import 'package:expenses_report/utils/last_month_check.dart';
 
-import 'package:financial_report/models/expense_model.dart';
+import 'package:expenses_report/models/expense.dart';
 
-Future<dynamic> getExpenses() async {
-  final response = await http.get(Uri.parse("http://localhost:3000/expenses"));
+import 'package:http/http.dart';
 
-  return jsonDecode(response.body);
+Future<List<Expense>> getExpenses() async {
+  final Response response = await http.get(Uri.parse("http://localhost:3000/expenses"));
+  final List<dynamic> data = jsonDecode(response.body);
+
+  final List<Expense> expenseList = [];
+
+  for (Map<String, dynamic> expense in data) {
+    String dateString = '${expense['date']['day']}-${expense['date']['month']}-${expense['date']['year']}';
+    DateTime date = stringToDate(dateString);
+
+    expenseList.add(Expense(expense['id'], expense['amount'], expense['category'], expense['notes'], date));
+  }
+
+  return expenseList;
 }
 
 Future<int> getTotalExpenses() async {
-  final expenses = await getExpenses();
+  final List<Expense> expenses = await getExpenses();
 
   num totalExpenses = 0;
 
-  for (var expense in expenses) {
+  for (Expense expense in expenses) {
     DateTime today = DateTime.now();
-    String expenseDateString = '${expense['date']['day']}-${expense['date']['month']}-${expense['date']['year']}';
-    DateTime expenseDate = stringToDate(expenseDateString);
+    DateTime expenseDate = expense.date;
 
     if (isWithinLastMonth(expenseDate, today)) {
-      totalExpenses += expense['amount'];
+      totalExpenses += expense.amount;
     }
   }
 
@@ -32,7 +43,7 @@ Future<int> getTotalExpenses() async {
 }
 
 Future<int> postExpense(Expense expense) async {
-  List<String> date = dateToString(expense.date).split('-');
+  final List<String> date = dateToString(expense.date).split('-');
 
   final response = await http.post(Uri.parse("http://localhost:3000/expenses"),
       headers: {'Content-Type': 'application/json'},
