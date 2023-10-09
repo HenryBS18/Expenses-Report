@@ -11,7 +11,7 @@ Expenses Report is a CLI application that helps you to note your expenses and yo
 
 ### 1. Install Dart
 
-First install Dart SDK, follow the instructions in the link below:
+<p>First install Dart SDK, follow the instructions in the link below:</p>
 <a href="https://dart.dev/get-dart" target="_blank">https://dart.dev/get-dart</a>
 
 ### 2. Install json-server
@@ -100,20 +100,20 @@ $ json-server --watch db/db.json
 
   ```dart
   Future<int> getTotalExpenses() async {
-  final List<Expense> expenses = await getExpenses();
+    final List<Expense> expenses = await getExpenses();
 
-  num totalExpenses = 0;
+    num totalExpenses = 0;
 
-  for (Expense expense in expenses) {
-    DateTime today = DateTime.now();
-    DateTime expenseDate = expense.date;
+    for (Expense expense in expenses) {
+      DateTime today = DateTime.now();
+      DateTime expenseDate = expense.date;
 
-    if (isWithinLastMonth(expenseDate, today)) {
-      totalExpenses += expense.amount;
+      if (isWithinLastMonth(expenseDate, today)) {
+        totalExpenses += expense.amount;
+      }
     }
-  }
 
-  return totalExpenses.toInt();
+    return totalExpenses.toInt();
   }
   ```
 
@@ -123,9 +123,9 @@ $ json-server --watch db/db.json
 
   ```dart
   DateTime stringToDate(String date) {
-  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
-  return dateFormat.parseStrict(date);
+    return dateFormat.parseStrict(date);
   }
   ```
 
@@ -134,9 +134,9 @@ $ json-server --watch db/db.json
 
   ```dart
   String dateToString(DateTime date) {
-  DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
-  return dateFormat.format(date);
+    return dateFormat.format(date);
   }
   ```
 
@@ -164,9 +164,9 @@ $ json-server --watch db/db.json
 
   ```dart
   bool isWithinLastMonth(DateTime expenseDate, DateTime today) {
-  DateTime lastMonthStart = DateTime(today.year, today.month - 1, today.day);
+    DateTime lastMonthStart = DateTime(today.year, today.month - 1, today.day);
 
-  return expenseDate.isAfter(lastMonthStart) || expenseDate.isAtSameMomentAs(lastMonthStart);
+    return expenseDate.isAfter(lastMonthStart) || expenseDate.isAtSameMomentAs(lastMonthStart);
   }
   ```
 
